@@ -12,8 +12,8 @@
 // ---------- CSV Reading Utility ----------
 
 /// To read a CSV file
-std::vector<std::vector<std::string>> readCSV(const std::string &filename) {
-    std::vector<std::vector<std::string>> data;
+std::vector<std::vector<std::string> > readCSV(const std::string &filename) {
+    std::vector<std::vector<std::string> > data;
     std::ifstream file(filename);
     if (!file)
         throw std::runtime_error("Cannot open file: " + filename);
@@ -55,8 +55,8 @@ public:
     LeafNode(int col) : colIndex(col), total(0) {}
 
     // Train the leaf using all data rows (i.e. compute frequencies)
-    void train(const std::vector<std::vector<std::string>> &data) {
-        for (const auto &row : data) {
+    void train(const std::vector<std::vector<std::string> > &data) {
+        for (auto &row : data) {
             if (colIndex < row.size()) {
                 frequency[row[colIndex]]++;
                 total++;
@@ -112,10 +112,10 @@ public:
 /// Sum node: represents a mixture (e.g. clusters). For simplicity, we update all children.
 class SumNode : public SPNNode {
 private:
-    std::vector<std::shared_ptr<SPNNode>> children;
+    std::vector<std::shared_ptr<SPNNode> > children;
     std::vector<double> weights; // assumed normalized to sum to 1.
 public:
-    SumNode(const std::vector<std::shared_ptr<SPNNode>> &children_, const std::vector<double> &weights_)
+    SumNode(const std::vector<std::shared_ptr<SPNNode> > &children_, const std::vector<double> &weights_)
         : children(children_), weights(weights_) {
         if (children.size() != weights.size())
             throw std::invalid_argument("Children and weights size mismatch.");
@@ -148,24 +148,24 @@ public:
 struct SPNModel {
     std::shared_ptr<SPNNode> root;
     // Keep direct access to leaf nodes for individual column queries.
-    std::vector<std::shared_ptr<LeafNode>> leaves;
+    std::vector<std::shared_ptr<LeafNode> > leaves;
 };
 
 /// Build a simple SPN from CSV data:
 /// For each column, a LeafNode is trained (i.e. frequency count is computed)
 /// and then they are combined into a ProductNode.
-SPNModel buildSPN(const std::vector<std::vector<std::string>> &data) {
+SPNModel buildSPN(const std::vector<std::vector<std::string> > &data) {
     if (data.empty())
         throw std::runtime_error("No data provided.");
     int numColumns = data[0].size();
-    std::vector<std::shared_ptr<LeafNode>> leaves;
+    std::vector<std::shared_ptr<LeafNode> > leaves;
     for (int col = 0; col < numColumns; col++) {
-        auto leaf = std::make_shared<LeafNode>(col);
+        std::shared_ptr<LeafNode> leaf = std::make_shared<LeafNode>(col);
         leaf->train(data);
         leaves.push_back(leaf);
     }
     // Combine all leaves in a product node (assumes independence across columns).
-    std::vector<std::shared_ptr<SPNNode>> children(leaves.begin(), leaves.end());
+    std::vector<std::shared_ptr<SPNNode> > children(leaves.begin(), leaves.end());
     auto prod = std::make_shared<ProductNode>(children);
     return SPNModel{prod, leaves};
 }
@@ -177,6 +177,7 @@ SPNModel buildSPN(const std::vector<std::vector<std::string>> &data) {
 double queryColumnProbability(const SPNModel &model, int col, const std::string &value) {
     if (col < 0 || col >= static_cast<int>(model.leaves.size()))
         throw std::out_of_range("Invalid column index for query.");
+
     // Create a dummy tuple with the given value at the specified column.
     // (Other columns are ignored in this simple example.)
     std::vector<std::string> dummyTuple(model.leaves.size(), "");
@@ -199,7 +200,7 @@ int main(int argc, char *argv[]) {
     }
 
     std::string filename = argv[1];
-    std::vector<std::vector<std::string>> data;
+    std::vector<std::vector<std::string> > data;
 
     try {
         data = readCSV(filename);
@@ -210,11 +211,11 @@ int main(int argc, char *argv[]) {
 
     std::cout << "Read " << data.size() << " rows from " << filename << ".\n";
 
-    // Build the (very simple) SPN model from CSV data.
+    // Building the SPN model from CSV data.
     SPNModel model = buildSPN(data);
     std::cout << "SPN model built (using independent column leafs).\n";
 
-    // Command-line interface for querying and updating.
+    // CLI for querying and updating.
     while (true) {
         std::cout << "\nSelect an option:\n"
                   << "1. Query probability for a column equality predicate\n"
@@ -244,7 +245,8 @@ int main(int argc, char *argv[]) {
                 std::cin >> token;
                 newTuple.push_back(token);
             }
-            // Update the model (insertion: delta = +1)
+
+            // Update the model
             updateModel(model, newTuple, +1);
             std::cout << "Model updated with new tuple.\n";
         } else if (choice == 3) {
