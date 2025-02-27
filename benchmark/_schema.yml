@@ -1,0 +1,75 @@
+description: str()
+suite: str()
+benchmark: str()
+name: str(required=False)
+readonly: bool()
+chart: include('chart_def', required=False)
+data: map(include('table'), required=False)      # Map from table name to 'table'
+systems:
+    mutable: include('mutable', required=False)
+    PostgreSQL: include('PostgreSQL', required=False)
+    DuckDB: include('DuckDB', required=False)
+    HyPer: include('HyPer', required=False)
+---
+chart_def:
+    x: include('axis', required=False)
+    y: include('axis', required=False)
+---
+axis:
+    # Kind of scale, one of
+    #   - linear
+    #   - log
+    scale: str(required=False)
+    # Type of data, one of
+    #   - Q quantitative    a continuous real-valued quantity
+    #   - O ordinal         a discrete ordered quantity
+    #   - N nominal         a discrete unordered category
+    #   - T temporal        a time or date value
+    type: str(required=False)
+    # A label for the axis
+    label: str(required=False)
+---
+table:
+    attributes: map(str(), key=str(), required=False)       # table column names and types
+    file: str(required=False)                               # path to table file
+    delimiter: str(required=False)                          # defaults to ','
+    header: int(required=False)                             # 1 if file has header, 0 otherwise; defaults to 0
+    format: str(required=False)                             # file format
+    # single scale factor or map from case name to scale factor (portion of file to load)
+    scale_factors: any(include('sf'), map(include('sf')), required=False)
+    # Number of lines in the file. Is counted and added by the benchmark script
+    lines_in_file: int(required=False)
+    # Map from index name to 'index', ignored by dbms not supporting indexes
+    indexes: map(include('index'), required=False)
+---
+sf: num(min=0, max=1)
+---
+index:
+    attributes: any(str(), list(str()))     # single attribute or list of attributes
+    # Indexing method, one of
+    #   - array     an index base on a sorted array
+    #   - rmi       a recursive model index
+    # Currently ignored by all dbms but mutable
+    method: str(required=False)
+---
+config:
+    args: str(required=False)
+    # single regex (default label 'Execution Time') or map of labels to regexes
+    pattern: any(str(), map(str(), key=str(), min=1))
+    variables: map(any(), key=str(), required=False)    # environment variables
+---
+mutable:
+    cases: any(include('cases'), include('repeat'))
+    args: str(required=False)
+    configurations: map(include('config'), key=str())
+PostgreSQL:
+    cases: include('cases')
+DuckDB:
+    cases: include('cases')
+HyPer:
+    cases: include('cases')
+---
+cases: map(str(), key=any())
+repeat:
+    n: any(int(), list(int()))    # either integer or list of integers to define a range
+    script: str()                 # script to be executed n times using different seed

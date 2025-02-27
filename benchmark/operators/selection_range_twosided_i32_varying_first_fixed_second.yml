@@ -1,0 +1,93 @@
+description: |
+    Two-sided range selection on attribute of type INT(4) with varying selectivity of the first predicate and 1%
+    selectivity of the second predicate.
+suite: operators
+benchmark: selection-twosided
+name: INT(4), 1%
+readonly: true
+chart:
+    x:
+        scale: linear
+        type: Q
+        label: Selectivity
+    y:
+        scale: linear
+        type: Q
+        label: 'Execution time [ms]'
+data:
+    'Attribute_i32':
+        attributes:
+            'id': 'INT NOT NULL'
+            'val': 'INT NOT NULL'
+        file: 'benchmark/operators/data/Attribute_i32.csv'
+        format: 'csv'
+        delimiter: ','
+        header: 1
+systems:
+    mutable:
+        configurations:
+            'WasmV8, Row':
+                args: --backend WasmV8 --data-layout Row
+                pattern: '^Execute machine code:.*'
+            'WasmV8, PAX4M':
+                args: --backend WasmV8 --data-layout PAX4M
+                pattern: '^Execute machine code:.*'
+        cases:
+            0.01: SELECT 1 FROM Attribute_i32 WHERE -2104533974 < val AND val < -2061584301;
+            0.05: SELECT 1 FROM Attribute_i32 WHERE -1932735282 < val AND val < -1889785609;
+            0.10: SELECT 1 FROM Attribute_i32 WHERE -1717986917 < val AND val < -1675037244;
+            0.20: SELECT 1 FROM Attribute_i32 WHERE -1288490188 < val AND val < -1245540515;
+            0.30: SELECT 1 FROM Attribute_i32 WHERE  -858993458 < val AND val <  -816043785;
+            0.40: SELECT 1 FROM Attribute_i32 WHERE  -429496729 < val AND val <  -386547056;
+            0.50: SELECT 1 FROM Attribute_i32 WHERE           0 < val AND val <    42949672;
+            0.60: SELECT 1 FROM Attribute_i32 WHERE   429496729 < val AND val <   472446402;
+            0.70: SELECT 1 FROM Attribute_i32 WHERE   858993458 < val AND val <   901943131;
+            0.80: SELECT 1 FROM Attribute_i32 WHERE  1288490188 < val AND val <  1331439861;
+            0.90: SELECT 1 FROM Attribute_i32 WHERE  1717986917 < val AND val <  1760936590;
+            0.95: SELECT 1 FROM Attribute_i32 WHERE  1932735282 < val AND val <  1975684955;
+            0.99: SELECT 1 FROM Attribute_i32 WHERE  2104533974 < val AND val <  2147483647;
+    PostgreSQL:
+        cases:
+            0.01: SELECT COUNT(*) FROM "Attribute_i32" WHERE -2104533974 < val AND val < -2061584301;
+            0.05: SELECT COUNT(*) FROM "Attribute_i32" WHERE -1932735282 < val AND val < -1889785609;
+            0.10: SELECT COUNT(*) FROM "Attribute_i32" WHERE -1717986917 < val AND val < -1675037244;
+            0.20: SELECT COUNT(*) FROM "Attribute_i32" WHERE -1288490188 < val AND val < -1245540515;
+            0.30: SELECT COUNT(*) FROM "Attribute_i32" WHERE  -858993458 < val AND val <  -816043785;
+            0.40: SELECT COUNT(*) FROM "Attribute_i32" WHERE  -429496729 < val AND val <  -386547056;
+            0.50: SELECT COUNT(*) FROM "Attribute_i32" WHERE           0 < val AND val <    42949672;
+            0.60: SELECT COUNT(*) FROM "Attribute_i32" WHERE   429496729 < val AND val <   472446402;
+            0.70: SELECT COUNT(*) FROM "Attribute_i32" WHERE   858993458 < val AND val <   901943131;
+            0.80: SELECT COUNT(*) FROM "Attribute_i32" WHERE  1288490188 < val AND val <  1331439861;
+            0.90: SELECT COUNT(*) FROM "Attribute_i32" WHERE  1717986917 < val AND val <  1760936590;
+            0.95: SELECT COUNT(*) FROM "Attribute_i32" WHERE  1932735282 < val AND val <  1975684955;
+            0.99: SELECT COUNT(*) FROM "Attribute_i32" WHERE  2104533974 < val AND val <  2147483647;
+    DuckDB:
+        cases:
+            0.01: SELECT COUNT(*) FROM "Attribute_i32" WHERE -2104533974 < val AND val < -2061584301;
+            0.05: SELECT COUNT(*) FROM "Attribute_i32" WHERE -1932735282 < val AND val < -1889785609;
+            0.10: SELECT COUNT(*) FROM "Attribute_i32" WHERE -1717986917 < val AND val < -1675037244;
+            0.20: SELECT COUNT(*) FROM "Attribute_i32" WHERE -1288490188 < val AND val < -1245540515;
+            0.30: SELECT COUNT(*) FROM "Attribute_i32" WHERE  -858993458 < val AND val <  -816043785;
+            0.40: SELECT COUNT(*) FROM "Attribute_i32" WHERE  -429496729 < val AND val <  -386547056;
+            0.50: SELECT COUNT(*) FROM "Attribute_i32" WHERE           0 < val AND val <    42949672;
+            0.60: SELECT COUNT(*) FROM "Attribute_i32" WHERE   429496729 < val AND val <   472446402;
+            0.70: SELECT COUNT(*) FROM "Attribute_i32" WHERE   858993458 < val AND val <   901943131;
+            0.80: SELECT COUNT(*) FROM "Attribute_i32" WHERE  1288490188 < val AND val <  1331439861;
+            0.90: SELECT COUNT(*) FROM "Attribute_i32" WHERE  1717986917 < val AND val <  1760936590;
+            0.95: SELECT COUNT(*) FROM "Attribute_i32" WHERE  1932735282 < val AND val <  1975684955;
+            0.99: SELECT COUNT(*) FROM "Attribute_i32" WHERE  2104533974 < val AND val <  2147483647;
+    HyPer:
+        cases:
+            0.01: SELECT COUNT(*) FROM "Attribute_i32" WHERE -2104533974 < val AND val < -2061584301;
+            0.05: SELECT COUNT(*) FROM "Attribute_i32" WHERE -1932735282 < val AND val < -1889785609;
+            0.10: SELECT COUNT(*) FROM "Attribute_i32" WHERE -1717986917 < val AND val < -1675037244;
+            0.20: SELECT COUNT(*) FROM "Attribute_i32" WHERE -1288490188 < val AND val < -1245540515;
+            0.30: SELECT COUNT(*) FROM "Attribute_i32" WHERE  -858993458 < val AND val <  -816043785;
+            0.40: SELECT COUNT(*) FROM "Attribute_i32" WHERE  -429496729 < val AND val <  -386547056;
+            0.50: SELECT COUNT(*) FROM "Attribute_i32" WHERE           0 < val AND val <    42949672;
+            0.60: SELECT COUNT(*) FROM "Attribute_i32" WHERE   429496729 < val AND val <   472446402;
+            0.70: SELECT COUNT(*) FROM "Attribute_i32" WHERE   858993458 < val AND val <   901943131;
+            0.80: SELECT COUNT(*) FROM "Attribute_i32" WHERE  1288490188 < val AND val <  1331439861;
+            0.90: SELECT COUNT(*) FROM "Attribute_i32" WHERE  1717986917 < val AND val <  1760936590;
+            0.95: SELECT COUNT(*) FROM "Attribute_i32" WHERE  1932735282 < val AND val <  1975684955;
+            0.99: SELECT COUNT(*) FROM "Attribute_i32" WHERE  2104533974 < val AND val <  2147483647;

@@ -1,0 +1,88 @@
+description: One-sided range selection on attribute of type DOUBLE.
+suite: operators
+benchmark: selection-onesided
+name: DOUBLE
+readonly: true
+chart:
+    x:
+        scale: linear
+        type: Q
+        label: Selectivity
+    y:
+        scale: linear
+        type: Q
+        label: 'Execution time [ms]'
+data:
+    'Attribute_d':
+        attributes:
+            'id': 'INT NOT NULL'
+            'val': 'DOUBLE NOT NULL'
+        file: 'benchmark/operators/data/Attribute_d.csv'
+        format: 'csv'
+        delimiter: ','
+        header: 1
+systems:
+    mutable:
+        configurations:
+            'WasmV8, PAX4M':
+                args: --backend WasmV8 --data-layout PAX4M
+                pattern: '^Execute machine code:.*'
+        cases:
+            0.01: SELECT 1 FROM Attribute_d WHERE val < 0.01;
+            0.05: SELECT 1 FROM Attribute_d WHERE val < 0.05;
+            0.10: SELECT 1 FROM Attribute_d WHERE val < 0.10;
+            0.20: SELECT 1 FROM Attribute_d WHERE val < 0.20;
+            0.30: SELECT 1 FROM Attribute_d WHERE val < 0.30;
+            0.40: SELECT 1 FROM Attribute_d WHERE val < 0.40;
+            0.50: SELECT 1 FROM Attribute_d WHERE val < 0.50;
+            0.60: SELECT 1 FROM Attribute_d WHERE val < 0.60;
+            0.70: SELECT 1 FROM Attribute_d WHERE val < 0.70;
+            0.80: SELECT 1 FROM Attribute_d WHERE val < 0.80;
+            0.90: SELECT 1 FROM Attribute_d WHERE val < 0.90;
+            0.95: SELECT 1 FROM Attribute_d WHERE val < 0.95;
+            0.99: SELECT 1 FROM Attribute_d WHERE val < 0.99;
+    PostgreSQL:
+        cases:
+            0.01: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.01;
+            0.05: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.05;
+            0.10: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.10;
+            0.20: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.20;
+            0.30: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.30;
+            0.40: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.40;
+            0.50: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.50;
+            0.60: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.60;
+            0.70: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.70;
+            0.80: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.80;
+            0.90: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.90;
+            0.95: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.95;
+            0.99: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.99;
+    DuckDB:
+        cases:
+            0.01: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.01;
+            0.05: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.05;
+            0.10: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.10;
+            0.20: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.20;
+            0.30: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.30;
+            0.40: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.40;
+            0.50: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.50;
+            0.60: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.60;
+            0.70: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.70;
+            0.80: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.80;
+            0.90: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.90;
+            0.95: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.95;
+            0.99: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.99;
+    HyPer:
+        cases:
+            0.01: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.01;
+            0.05: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.05;
+            0.10: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.10;
+            0.20: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.20;
+            0.30: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.30;
+            0.40: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.40;
+            0.50: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.50;
+            0.60: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.60;
+            0.70: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.70;
+            0.80: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.80;
+            0.90: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.90;
+            0.95: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.95;
+            0.99: SELECT COUNT(*) FROM "Attribute_d" WHERE val < 0.99;

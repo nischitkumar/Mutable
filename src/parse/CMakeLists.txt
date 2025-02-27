@@ -1,0 +1,10 @@
+add_library(
+    parse
+    OBJECT
+    AST.cpp
+    ASTDot.cpp
+    ASTDumper.cpp
+    ASTPrinter.cpp
+    Parser.cpp
+    Sema.cpp
+)

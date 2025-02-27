@@ -1,0 +1,68 @@
+description: Compute varying number of aggregates while grouping.
+suite: operators
+benchmark: grouping
+name: aggregates
+readonly: true
+chart:
+    x:
+        scale: linear
+        type: O
+        label: Amount of aggregates
+    y:
+        scale: linear
+        type: Q
+        label: 'Execution time [ms]'
+data:
+    'Distinct_i32':
+        file: 'benchmark/operators/data/Distinct_i32.csv'
+        format: 'csv'
+        delimiter: ','
+        header: 1
+        attributes:
+            'id': 'INT NOT NULL'
+            'n1': 'INT NOT NULL'
+            'n10': 'INT NOT NULL'
+            'n100': 'INT NOT NULL'
+            'n1000': 'INT NOT NULL'
+            'n10000': 'INT NOT NULL'
+            'n100000': 'INT NOT NULL'
+systems:
+    mutable:
+        configurations:
+            'Interpreter, PAX4M':
+                args: >-
+                    --backend Interpreter
+                    --data-layout PAX4M
+                    --cardinality-estimator Injected
+                    --use-cardinality-file benchmark/operators/group_by_aggregates.json
+                pattern: '^Execute query:.*'
+            'WasmV8, PAX4M':
+                args: >-
+                  --backend WasmV8
+                  --data-layout PAX4M
+                  --cardinality-estimator Injected
+                  --use-cardinality-file benchmark/operators/group_by_aggregates.json
+                pattern: '^Execute machine code:.*'
+        cases:
+            1: SELECT MIN(n100) FROM Distinct_i32 GROUP BY n10;
+            2: SELECT MIN(n100), MIN(n1000) FROM Distinct_i32 GROUP BY n10;
+            3: SELECT MIN(n100), MIN(n1000), MIN(n10000) FROM Distinct_i32 GROUP BY n10;
+            4: SELECT MIN(n100), MIN(n1000), MIN(n10000), MIN(n100000) FROM Distinct_i32 GROUP BY n10;
+    PostgreSQL:
+        cases:
+            1: SELECT MIN(n100) FROM "Distinct_i32" GROUP BY n10;
+            2: SELECT MIN(n100), MIN(n1000) FROM "Distinct_i32" GROUP BY n10;
+            3: SELECT MIN(n100), MIN(n1000), MIN(n10000) FROM "Distinct_i32" GROUP BY n10;
+            4: SELECT MIN(n100), MIN(n1000), MIN(n10000), MIN(n100000) FROM "Distinct_i32" GROUP BY n10;
+    DuckDB:
+        cases:
+            1: SELECT MIN(n100) FROM "Distinct_i32" GROUP BY n10;
+            2: SELECT MIN(n100), MIN(n1000) FROM "Distinct_i32" GROUP BY n10;
+            3: SELECT MIN(n100), MIN(n1000), MIN(n10000) FROM "Distinct_i32" GROUP BY n10;
+            4: SELECT MIN(n100), MIN(n1000), MIN(n10000), MIN(n100000) FROM "Distinct_i32" GROUP BY n10;
+    HyPer:
+        cases:
+            1: SELECT MIN(n100) FROM "Distinct_i32" GROUP BY n10;
+            2: SELECT MIN(n100), MIN(n1000) FROM "Distinct_i32" GROUP BY n10;
+            3: SELECT MIN(n100), MIN(n1000), MIN(n10000) FROM "Distinct_i32" GROUP BY n10;
+            4: SELECT MIN(n100), MIN(n1000), MIN(n10000), MIN(n100000) FROM "Distinct_i32" GROUP BY n10;

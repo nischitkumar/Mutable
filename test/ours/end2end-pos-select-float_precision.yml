@@ -1,0 +1,51 @@
+description: Compare the precision of floats
+db: ours
+query: |
+    SELECT rfloat * rfloat FROM R WHERE key < 5;
+required: YES
+
+stages:
+    lexer:
+        out: |
+            -:1:1: SELECT TK_Select
+            -:1:8: rfloat TK_IDENTIFIER
+            -:1:15: * TK_ASTERISK
+            -:1:17: rfloat TK_IDENTIFIER
+            -:1:24: FROM TK_From
+            -:1:29: R TK_IDENTIFIER
+            -:1:31: WHERE TK_Where
+            -:1:37: key TK_IDENTIFIER
+            -:1:41: < TK_LESS
+            -:1:43: 5 TK_DEC_INT
+            -:1:44: ; TK_SEMICOL
+        err: NULL
+        num_err: 0
+        returncode: 0
+
+    parser:
+        out: |
+            SELECT (rfloat * rfloat)
+            FROM R
+            WHERE (key < 5);
+        err: NULL
+        num_err: 0
+        returncode: 0
+
+    sema:
+        out: NULL
+        err: NULL
+        num_err: 0
+        returncode: 0
+
+    end2end:
+        cli_args: --insist-no-ternary-logic
+        # maybe switch to sqlite3 ref
+        out: |
+            1.2394592
+            34.723442
+            0.62094396
+            4.389318
+            64.809906
+        err: NULL
+        num_err: 0
+        returncode: 0

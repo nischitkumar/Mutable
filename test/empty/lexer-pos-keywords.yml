@@ -1,0 +1,133 @@
+description: Keywords testing
+db: empty
+query: |
+    AND
+    AS
+    ASC
+    BOOL
+    BY
+    CASCADE
+    CHAR
+    CHECK
+    CREATE
+    DATABASE
+    DATE
+    DATETIME
+    DECIMAL
+    DEFAULT
+    DELETE
+    DELIMITER
+    DESC
+    DOUBLE
+    DROP
+    DSV
+    ESCAPE
+    EXISTS
+    FALSE
+    FLOAT
+    FROM
+    GROUP
+    HAS
+    HAVING
+    HEADER
+    IF
+    IMPORT
+    INDEX
+    INSERT
+    INT
+    INTO
+    KEY
+    LIKE
+    LIMIT
+    NOT
+    NULL
+    OFFSET
+    ON
+    OR
+    ORDER
+    PRIMARY
+    QUOTE
+    REFERENCES
+    RESTRICT
+    ROWS
+    SELECT
+    SET
+    SKIP
+    TABLE
+    TRUE
+    UNIQUE
+    UPDATE
+    USE
+    USING
+    VALUES
+    VARCHAR
+    WHERE
+required: YES
+
+stages:
+    lexer:
+        out: |
+            -:1:1: AND TK_And
+            -:2:1: AS TK_As
+            -:3:1: ASC TK_Ascending
+            -:4:1: BOOL TK_Bool
+            -:5:1: BY TK_By
+            -:6:1: CASCADE TK_Cascade
+            -:7:1: CHAR TK_Char
+            -:8:1: CHECK TK_Check
+            -:9:1: CREATE TK_Create
+            -:10:1: DATABASE TK_Database
+            -:11:1: DATE TK_Date
+            -:12:1: DATETIME TK_Datetime
+            -:13:1: DECIMAL TK_Decimal
+            -:14:1: DEFAULT TK_Default
+            -:15:1: DELETE TK_Delete
+            -:16:1: DELIMITER TK_Delimiter
+            -:17:1: DESC TK_Descending
+            -:18:1: DOUBLE TK_Double
+            -:19:1: DROP TK_Drop
+            -:20:1: DSV TK_Dsv
+            -:21:1: ESCAPE TK_Escape
+            -:22:1: EXISTS TK_Exists
+            -:23:1: FALSE TK_False
+            -:24:1: FLOAT TK_Float
+            -:25:1: FROM TK_From
+            -:26:1: GROUP TK_Group
+            -:27:1: HAS TK_Has
+            -:28:1: HAVING TK_Having
+            -:29:1: HEADER TK_Header
+            -:30:1: IF TK_If
+            -:31:1: IMPORT TK_Import
+            -:32:1: INDEX TK_Index
+            -:33:1: INSERT TK_Insert
+            -:34:1: INT TK_Int
+            -:35:1: INTO TK_Into
+            -:36:1: KEY TK_Key
+            -:37:1: LIKE TK_Like
+            -:38:1: LIMIT TK_Limit
+            -:39:1: NOT TK_Not
+            -:40:1: NULL TK_Null
+            -:41:1: OFFSET TK_Offset
+            -:42:1: ON TK_On
+            -:43:1: OR TK_Or
+            -:44:1: ORDER TK_Order
+            -:45:1: PRIMARY TK_Primary
+            -:46:1: QUOTE TK_Quote
+            -:47:1: REFERENCES TK_References
+            -:48:1: RESTRICT TK_Restrict
+            -:49:1: ROWS TK_Rows
+            -:50:1: SELECT TK_Select
+            -:51:1: SET TK_Set
+            -:52:1: SKIP TK_Skip
+            -:53:1: TABLE TK_Table
+            -:54:1: TRUE TK_True
+            -:55:1: UNIQUE TK_Unique
+            -:56:1: UPDATE TK_Update
+            -:57:1: USE TK_Use
+            -:58:1: USING TK_Using
+            -:59:1: VALUES TK_Values
+            -:60:1: VARCHAR TK_Varchar
+            -:61:1: WHERE TK_Where
+        err: NULL
+        num_err: 0
+        returncode: 0

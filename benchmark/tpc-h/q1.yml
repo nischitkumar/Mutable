@@ -1,0 +1,142 @@
+description: TPC-H Query 1
+suite: TPC
+benchmark: TPC-H
+name: Q1
+readonly: true
+chart:
+    x:
+        scale: linear
+        type: O
+        label: Scale factor
+    y:
+        scale: linear
+        type: Q
+        label: 'Execution time [ms]'
+data:
+    Lineitem:
+        file: benchmark/tpc-h/data/lineitem.tbl
+        format: 'CSV'
+        delimiter: '|'
+        header: 0
+        attributes:
+            'l_orderkey': 'INT NOT NULL'
+            'l_partkey': 'INT NOT NULL'
+            'l_suppkey': 'INT NOT NULL'
+            'l_linenumber': 'INT NOT NULL'
+            'l_quantity': 'DECIMAL 10 2 NOT NULL'
+            'l_extendedprice': 'DECIMAL 10 2 NOT NULL'
+            'l_discount': 'DECIMAL 10 2 NOT NULL'
+            'l_tax': 'DECIMAL 10 2 NOT NULL'
+            'l_returnflag': 'CHAR 1 NOT NULL'
+            'l_linestatus': 'CHAR 1 NOT NULL'
+            'l_shipdate': 'DATE NOT NULL'
+            'l_commitdate': 'DATE NOT NULL'
+            'l_receiptdate': 'DATE NOT NULL'
+            'l_shipinstruct': 'CHAR 25 NOT NULL'
+            'l_shipmode': 'CHAR 10 NOT NULL'
+            'l_comment': 'CHAR 44 NOT NULL'
+systems:
+    mutable:
+        configurations:
+            'WasmV8, PAX4M':
+                args: >-
+                    --backend WasmV8
+                    --data-layout PAX4M
+                    --cardinality-estimator Injected
+                    --use-cardinality-file benchmark/tpc-h/q1.json
+                pattern: '^Execute machine code:.*'
+        cases:
+            1: |
+                SELECT
+                        l_returnflag,
+                        l_linestatus,
+                        SUM(l_quantity) AS sum_qty,
+                        SUM(l_extendedprice) AS sum_base_price,
+                        SUM(l_extendedprice * (1 - l_discount)) AS sum_disc_price,
+                        SUM(l_extendedprice * (1 - l_discount) * (1 + l_tax)) AS sum_charge,
+                        AVG(l_quantity) AS avg_qty,
+                        AVG(l_extendedprice) AS avg_price,
+                        AVG(l_discount) AS avg_disc,
+                        COUNT(*) AS count_order
+                FROM
+                        Lineitem
+                WHERE
+                        l_shipdate <= d'1998-09-02'
+                GROUP BY
+                        l_returnflag,
+                        l_linestatus
+                ORDER BY
+                        l_returnflag,
+                        l_linestatus;
+    PostgreSQL:
+        cases:
+            1: |
+                SELECT
+                        l_returnflag,
+                        l_linestatus,
+                        SUM(l_quantity) AS sum_qty,
+                        SUM(l_extendedprice) AS sum_base_price,
+                        SUM(l_extendedprice * (1 - l_discount)) AS sum_disc_price,
+                        SUM(l_extendedprice * (1 - l_discount) * (1 + l_tax)) AS sum_charge,
+                        AVG(l_quantity) AS avg_qty,
+                        AVG(l_extendedprice) AS avg_price,
+                        AVG(l_discount) AS avg_disc,
+                        COUNT(*) AS count_order
+                FROM
+                        "Lineitem"
+                WHERE
+                        l_shipdate <= DATE '1998-09-02'
+                GROUP BY
+                        l_returnflag,
+                        l_linestatus
+                ORDER BY
+                        l_returnflag,
+                        l_linestatus;
+    DuckDB:
+        cases:
+            1: |
+                SELECT
+                        l_returnflag,
+                        l_linestatus,
+                        SUM(l_quantity) AS sum_qty,
+                        SUM(l_extendedprice) AS sum_base_price,
+                        SUM(l_extendedprice * (1 - l_discount)) AS sum_disc_price,
+                        SUM(l_extendedprice * (1 - l_discount) * (1 + l_tax)) AS sum_charge,
+                        AVG(l_quantity) AS avg_qty,
+                        AVG(l_extendedprice) AS avg_price,
+                        AVG(l_discount) AS avg_disc,
+                        COUNT(*) AS count_order
+                FROM
+                        "Lineitem"
+                WHERE
+                        l_shipdate <= DATE '1998-09-02'
+                GROUP BY
+                        l_returnflag,
+                        l_linestatus
+                ORDER BY
+                        l_returnflag,
+                        l_linestatus;
+    HyPer:
+        cases:
+            1: |
+                SELECT
+                        l_returnflag,
+                        l_linestatus,
+                        SUM(l_quantity) AS sum_qty,
+                        SUM(l_extendedprice) AS sum_base_price,
+                        SUM(l_extendedprice * (1 - l_discount)) AS sum_disc_price,
+                        SUM(l_extendedprice * (1 - l_discount) * (1 + l_tax)) AS sum_charge,
+                        AVG(l_quantity) AS avg_qty,
+                        AVG(l_extendedprice) AS avg_price,
+                        AVG(l_discount) AS avg_disc,
+                        COUNT(*) AS count_order
+                FROM
+                        "Lineitem"
+                WHERE
+                        l_shipdate <= date '1998-09-02'
+                GROUP BY
+                        l_returnflag,
+                        l_linestatus
+                ORDER BY
+                        l_returnflag,
+                        l_linestatus;

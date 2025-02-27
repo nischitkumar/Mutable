@@ -1,0 +1,16 @@
+add_library(
+    catalog
+    OBJECT
+    CardinalityEstimator.cpp
+    Catalog.cpp
+    CostFunctionCout.cpp
+    CostModel.cpp
+    DatabaseCommand.cpp
+    Scheduler.cpp
+    Schema.cpp
+    SerialScheduler.cpp
+    SpnWrapper.cpp
+    TableFactory.cpp
+    TrainedCostFunction.cpp
+    Type.cpp
+)

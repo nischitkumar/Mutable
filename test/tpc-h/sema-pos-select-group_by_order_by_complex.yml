@@ -1,0 +1,43 @@
+description: GROUP BY and ORDER BY complex statement testing
+db: tpc-h
+query: |
+    SELECT x FROM LINEITEM GROUP BY l_orderkey + l_partkey AS x ORDER BY x;
+required: YES
+
+stages:
+    lexer:
+        out: |
+          -:1:1: SELECT TK_Select
+          -:1:8: x TK_IDENTIFIER
+          -:1:10: FROM TK_From
+          -:1:15: LINEITEM TK_IDENTIFIER
+          -:1:24: GROUP TK_Group
+          -:1:30: BY TK_By
+          -:1:33: l_orderkey TK_IDENTIFIER
+          -:1:44: + TK_PLUS
+          -:1:46: l_partkey TK_IDENTIFIER
+          -:1:56: AS TK_As
+          -:1:59: x TK_IDENTIFIER
+          -:1:61: ORDER TK_Order
+          -:1:67: BY TK_By
+          -:1:70: x TK_IDENTIFIER
+          -:1:71: ; TK_SEMICOL
+        err: NULL
+        num_err: 0
+        returncode: 0
+
+    parser:
+        out: |
+            SELECT x
+            FROM LINEITEM
+            GROUP BY (l_orderkey + l_partkey) AS x
+            ORDER BY x ASC;
+        err: NULL
+        num_err: 0
+        returncode: 0
+
+    sema:
+        out: NULL
+        err: NULL
+        num_err: 0
+        returncode: 0

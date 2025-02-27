@@ -1,0 +1,64 @@
+description: Order by single attribute of type INT(4) and varying number or distinct values.
+suite: operators
+benchmark: ordering
+name: distinct INT(4)
+readonly: true
+chart:
+    x:
+        scale: log
+        type: Q
+        label: Number of distinct values
+    y:
+        scale: linear
+        type: Q
+        label: 'Execution time [ms]'
+data:
+    'Distinct_i32':
+        file: 'benchmark/operators/data/Distinct_i32.csv'
+        format: 'csv'
+        delimiter: ','
+        header: 1
+        attributes:
+            'id': 'INT NOT NULL'
+            'n1': 'INT NOT NULL'
+            'n10': 'INT NOT NULL'
+            'n100': 'INT NOT NULL'
+            'n1000': 'INT NOT NULL'
+            'n10000': 'INT NOT NULL'
+            'n100000': 'INT NOT NULL'
+systems:
+    mutable:
+        configurations:
+            'Interpreter':
+                args: --backend Interpreter
+                pattern: '^Execute query:.*'
+            'WasmV8, PAX4M':
+                args: --backend WasmV8 --data-layout PAX4M
+                pattern: '^Execute machine code:.*'
+        cases:
+            10:     SELECT id FROM Distinct_i32 ORDER BY     n10;
+            100:    SELECT id FROM Distinct_i32 ORDER BY    n100;
+            1000:   SELECT id FROM Distinct_i32 ORDER BY   n1000;
+            10000:  SELECT id FROM Distinct_i32 ORDER BY  n10000;
+            100000: SELECT id FROM Distinct_i32 ORDER BY n100000;
+    PostgreSQL:
+        cases:
+            10:     SELECT id FROM "Distinct_i32" ORDER BY     n10;
+            100:    SELECT id FROM "Distinct_i32" ORDER BY    n100;
+            1000:   SELECT id FROM "Distinct_i32" ORDER BY   n1000;
+            10000:  SELECT id FROM "Distinct_i32" ORDER BY  n10000;
+            100000: SELECT id FROM "Distinct_i32" ORDER BY n100000;
+    DuckDB:
+        cases:
+            10:     SELECT id FROM "Distinct_i32" ORDER BY     n10;
+            100:    SELECT id FROM "Distinct_i32" ORDER BY    n100;
+            1000:   SELECT id FROM "Distinct_i32" ORDER BY   n1000;
+            10000:  SELECT id FROM "Distinct_i32" ORDER BY  n10000;
+            100000: SELECT id FROM "Distinct_i32" ORDER BY n100000;
+    HyPer:
+        cases:
+            10:     SELECT id FROM "Distinct_i32" ORDER BY     n10;
+            100:    SELECT id FROM "Distinct_i32" ORDER BY    n100;
+            1000:   SELECT id FROM "Distinct_i32" ORDER BY   n1000;
+            10000:  SELECT id FROM "Distinct_i32" ORDER BY  n10000;
+            100000: SELECT id FROM "Distinct_i32" ORDER BY n100000;

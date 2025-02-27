@@ -1,0 +1,238 @@
+body
+{
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
+
+[id]::before
+{
+    content: '';
+    display: block;
+    height:      56px;
+    margin-top: -56px;
+    visibility: hidden;
+}
+
+.navbar-brand
+{
+    padding-right: 1.5rem;
+    border-right: 1.5px solid #6c757d;
+}
+
+#benchmarks
+{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ico-rotate
+{
+    transform: rotate(180deg);
+}
+
+.sidebar-sticky
+{
+    height: calc(100vh - 56px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overflow-wrap: break-word;
+}
+
+nav.sidebar .sidebar-heading
+{
+    color: #6c757d;
+    font-size: 10pt;
+    text-transform: uppercase;
+}
+
+nav.sidebar a.nav-link
+{
+    color: #333;
+    font-weight: 500;
+    font-size: 11pt;
+    line-height: 100%;
+}
+
+nav.sidebar a.nav-link i
+{
+    color: #999;
+    margin-right: 4pt;
+    font-size: 75%;
+    vertical-align: baseline;
+}
+
+nav.sidebar .nav .nav a.nav-link
+{
+    color: #6c757d;
+    margin-left: calc(1rem + 5px);
+    font-size: 75%;
+    font-weight: normal;
+    line-height: 100%;
+    padding-top: .2rem;
+    padding-bottom: .2rem;
+}
+
+main
+{
+    margin-bottom: 5rem;
+}
+
+main h1
+{
+    color: #333;
+    font-size: 24pt;
+    margin-top: 1.5rem;
+}
+
+main h2
+{
+    color: #333;
+    font-size: 16pt;
+    border-bottom: 1px solid #6c757d;
+    margin-top: 1.5rem;
+}
+
+main h3
+{
+    color: #6c757d;
+    font-size: 12pt;
+    margin-top: .25rem;
+    margin-bottom: .5rem;
+}
+
+main h5
+{
+    color: #333;
+    font-size: 11pt;
+    font-weight: bold;
+}
+
+.commitish
+{
+    display: inline-block;
+    vertical-align: bottom;
+
+    font-family: "Courier New", Courier, monospace;
+    font-size: 85%;
+    color: #333;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 5em;
+}
+
+code
+{
+    box-sizing: border-box;
+    border: 0.5px solid #999;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 80%;
+    cursor: text;
+    padding: 2pt 4pt;
+    vertical-align: text-bottom;
+}
+
+pre
+{
+    display: inline-block;
+    margin-left: 2.5em;
+    overflow: visible;
+}
+
+pre code
+{
+    padding: 5px 10px;
+}
+
+.suite > h2
+{
+    cursor: pointer;
+}
+
+.suite > h2 i.fas
+{
+    font-size: 80%;
+    margin-left: 10px;
+    transition-duration: 0.3s;
+    transition-property: transform;
+}
+.suite > h2:hover i.fas.fa-chevron-down
+{
+    transform: rotate(-180deg);
+}
+.suite > h2:hover i.fas.fa-chevron-up
+{
+    transform: rotate(180deg);
+}
+
+.benchmark
+{
+    overflow: visible;
+    margin-bottom: 1rem;
+}
+
+.charts
+{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+    padding: -10px;
+}
+
+.charts .card
+{
+    margin: 10px;
+    transition: transform .1s ease-in-out;
+}
+
+.charts .card:hover:not(:last-of-type)
+{
+    margin-bottom: -10%;
+}
+
+.charts .card:hover
+{
+    position: relative;
+    box-shadow: 5px 5px 2px #333;
+    padding-bottom: .5rem;
+    z-index: 1000;
+    transform: scale(1.1);
+}
+
+.charts .card-img-top
+{
+    padding: 5px;
+}
+
+.charts .card .vega-embed
+{
+    padding-right: 5px;
+}
+
+.charts .card .card-body
+{
+    padding: .5rem 1.25rem;
+    font-size: 11pt;
+}
+
+.charts .card .card-header
+{
+    padding: 5px 1.25rem;
+    font-size: 12px;
+}
+
+.charts .card:hover .info
+{
+    display: initial !important;
+}
+
+.card p
+{
+    margin-bottom: 5pt;
+}
